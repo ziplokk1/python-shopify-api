@@ -1,0 +1,2 @@
+from shopify_inventory_objects import *
+from products_api_wrapper import ShopifyApiWrapper
