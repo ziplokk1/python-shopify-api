@@ -1,7 +1,7 @@
 import requests
 import json
 
-from ..base import ShopifyApiWrapper, datetime_to_string
+from ..base import ShopifyApiWrapper, datetime_to_string, ShopifyApiError
 from .objects import Order
 
 
@@ -68,6 +68,11 @@ class OrdersApiWrapper(ShopifyApiWrapper):
         params = self.remove_empty(params)
         url = self.url_host() + self.default_endpoint
         response = requests.get(url, params=params)
-        with open('orders-list.json', 'wb') as f:
-            f.write(response.content)
-        return [Order(x) for x in json.loads(response.content).get('orders', [])]
+
+        # Check if the response was an error and raise if necessary.
+        err = ShopifyApiError(response)
+        if err.has_error():
+            raise err
+
+        data = json.loads(response.content)
+        return [Order(x) for x in data.get('orders', [])]
