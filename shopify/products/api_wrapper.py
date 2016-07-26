@@ -3,7 +3,7 @@ import json
 import requests
 
 from .objects import Product
-from ..base import ShopifyApiWrapper, ShopifyApiError, convert_datetime
+from ..base import ShopifyApiWrapper, ShopifyApiError, datetime_to_string
 
 
 class ProductsApiWrapper(ShopifyApiWrapper):
@@ -132,12 +132,12 @@ class ProductsApiWrapper(ShopifyApiWrapper):
             handle=handle,
             product_type=product_type,
             collection_id=collection_id,
-            created_at_min=convert_datetime(created_at_min),
-            created_at_max=convert_datetime(created_at_max),
-            updated_at_min=convert_datetime(updated_at_min),
-            updated_at_max=convert_datetime(updated_at_max),
-            published_at_min=convert_datetime(published_at_min),
-            published_at_max=convert_datetime(published_at_max),
+            created_at_min=datetime_to_string(created_at_min),
+            created_at_max=datetime_to_string(created_at_max),
+            updated_at_min=datetime_to_string(updated_at_min),
+            updated_at_max=datetime_to_string(updated_at_max),
+            published_at_min=datetime_to_string(published_at_min),
+            published_at_max=datetime_to_string(published_at_max),
             published_status=published_status,
             fields=','.join(fields)
         )

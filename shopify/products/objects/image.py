@@ -1,6 +1,6 @@
 import base64
 
-from ...base import BaseParser, convert_datetime, convert_timestamp
+from ...base import BaseParser, datetime_to_string, string_to_datetime
 
 
 class Image(BaseParser):
@@ -25,19 +25,19 @@ class Image(BaseParser):
 
     @property
     def created_at(self):
-        return convert_timestamp(self._dict.get('created_at'))
+        return string_to_datetime(self._dict.get('created_at'))
 
     @created_at.setter
     def created_at(self, val):
-        self._dict['created_at'] = convert_datetime(val)
+        self._dict['created_at'] = datetime_to_string(val)
 
     @property
     def updated_at(self):
-        return convert_timestamp(self._dict.get('updated_at'))
+        return string_to_datetime(self._dict.get('updated_at'))
 
     @updated_at.setter
     def updated_at(self, val):
-        self._dict['updated_at'] = convert_datetime(val)
+        self._dict['updated_at'] = datetime_to_string(val)
 
     @property
     def src(self):

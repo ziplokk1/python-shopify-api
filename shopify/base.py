@@ -4,7 +4,7 @@ import datetime
 from dateutil import parser as date_parser
 
 
-def convert_datetime(dt):
+def datetime_to_string(dt):
     """
     Convert a datetime object to the preferred format for the shopify api. (2016-01-01T11:00:00-5:00)
 
@@ -24,7 +24,7 @@ def convert_datetime(dt):
     return dt_str + offset_str
 
 
-def convert_timestamp(dt_str):
+def string_to_datetime(dt_str):
     """
     Convert a formatted timestamp to a datetime object.
 
@@ -33,6 +33,18 @@ def convert_timestamp(dt_str):
     """
     if dt_str:
         return date_parser.parse(dt_str)
+    return None
+
+
+def string_to_float(float_str):
+    """
+    Convert a float in string format to a float.
+
+    :param float_str: Float in string format ("25.01")
+    :return: float from string
+    """
+    if float_str:
+        return float(float_str)
     return None
 
 
