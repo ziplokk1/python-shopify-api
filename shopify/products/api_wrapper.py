@@ -4,16 +4,18 @@ import requests
 import datetime
 
 from .objects import Product
-from ..base import ShopifyApiWrapper, ShopifyApiError
+from ..base import ShopifyApiWrapper, ShopifyApiError, convert_datetime
 
 
 class ProductsApiWrapper(ShopifyApiWrapper):
 
-    valid_published_statuses = [
+    valid_published_status_values = [
         'published',
         'unpublished',
         'any'
     ]
+
+    max_results_limit = 250
 
     default_endpoint = '/admin/products.json'
     operational_endpoint = '/admin/products/{}.json'
@@ -117,11 +119,10 @@ class ProductsApiWrapper(ShopifyApiWrapper):
         :return:
         """
         url = self.url_host() + self.default_endpoint
-        if published_status not in self.valid_published_statuses:
-            raise ValueError('\'{}\' is not a valid published status. Use one of {}.'.format(
-                published_status, self.valid_published_statuses))
-        if limit > 250:
-            raise ValueError('limit must be less than 250')
+        if published_status not in self.valid_published_status_values:
+            raise ValueError('`published_status` must be one of {}'.format(self.valid_published_status_values))
+        if limit > self.max_results_limit:
+            raise ValueError('`limit` cannot exceed {}'.format(self.max_results_limit))
         params = dict(
             ids=','.join(ids),
             limit=limit,
@@ -132,12 +133,12 @@ class ProductsApiWrapper(ShopifyApiWrapper):
             handle=handle,
             product_type=product_type,
             collection_id=collection_id,
-            created_at_min=self.convert_datetime(created_at_min),
-            created_at_max=self.convert_datetime(created_at_max),
-            updated_at_min=self.convert_datetime(updated_at_min),
-            updated_at_max=self.convert_datetime(updated_at_max),
-            published_at_min=self.convert_datetime(published_at_min),
-            published_at_max=self.convert_datetime(published_at_max),
+            created_at_min=convert_datetime(created_at_min),
+            created_at_max=convert_datetime(created_at_max),
+            updated_at_min=convert_datetime(updated_at_min),
+            updated_at_max=convert_datetime(updated_at_max),
+            published_at_min=convert_datetime(published_at_min),
+            published_at_max=convert_datetime(published_at_max),
             published_status=published_status,
             fields=','.join(fields)
         )
@@ -145,22 +146,3 @@ class ProductsApiWrapper(ShopifyApiWrapper):
         response = requests.get(url, params=params)
         data = json.loads(response.content)
         return [Product(x) for x in data.get('products', [])]
-
-    @staticmethod
-    def convert_datetime(dt):
-        """
-        Convert a datetime object to the proper format for shopify's api.
-        :param dt:
-        :return:
-        """
-        if not dt:
-            return None
-        if not isinstance(dt, datetime.datetime):
-            raise ValueError('Must supply an instance of `datetime`.')
-        # Calculate the utc offset of the current timezone
-        # 1 is added to the total seconds to account for the time which it takes the operation to calculate
-        # utcnow and local now.
-        offset = int((datetime.datetime.utcnow() - datetime.datetime.now()).total_seconds() + 1 / 60 / 60)
-        offset_str = '-%d:00' % offset
-        dt_str = dt.strftime('%Y-%m-%dT%H:%M:%S')
-        return dt_str + offset_str

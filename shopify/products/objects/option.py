@@ -1,7 +1,7 @@
-from .base import Base
+from ...base import BaseParser
 
 
-class Option(Base):
+class Option(BaseParser):
 
     @property
     def product_id(self):

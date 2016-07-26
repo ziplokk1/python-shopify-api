@@ -1,9 +1,9 @@
 from dateutil import parser as date_parser
 
-from .base import Base
+from ...base import BaseParser
 
 
-class Variant(Base):
+class Variant(BaseParser):
 
     @property
     def product_id(self):
@@ -112,19 +112,19 @@ class Variant(Base):
 
     @property
     def created_at(self):
-        return self.convert_timestamp(self._dict.get('created_at'))
+        return convert_timestamp(self._dict.get('created_at'))
 
     @created_at.setter
     def created_at(self, val):
-        self._dict['created_at'] = self.convert_datetime(val)
+        self._dict['created_at'] = convert_datetime(val)
 
     @property
     def updated_at(self):
-        return self.convert_timestamp(self._dict.get('updated_at'))
+        return convert_timestamp(self._dict.get('updated_at'))
 
     @updated_at.setter
     def updated_at(self, val):
-        self._dict['updated_at'] = self.convert_datetime(val)
+        self._dict['updated_at'] = convert_datetime(val)
 
     @property
     def taxable(self):

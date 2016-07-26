@@ -1,12 +1,12 @@
 from HTMLParser import HTMLParser
 
-from .base import Base
+from ...base import BaseParser, convert_datetime, convert_timestamp
 from .image import Image
 from .option import Option
 from .variant import Variant
 
 
-class Product(Base):
+class Product(BaseParser):
 
     @property
     def title(self):
@@ -45,11 +45,11 @@ class Product(Base):
 
     @property
     def created_at(self):
-        return self.convert_timestamp(self._dict.get('created_at'))
+        return convert_timestamp(self._dict.get('created_at'))
 
     @created_at.setter
     def created_at(self, val):
-        self._dict['created_at'] = self.convert_datetime(val)
+        self._dict['created_at'] = convert_datetime(val)
 
     @property
     def handle(self):
@@ -61,15 +61,15 @@ class Product(Base):
 
     @property
     def updated_at(self):
-        return self.convert_timestamp(self._dict.get('updated_at'))
+        return convert_timestamp(self._dict.get('updated_at'))
 
     @updated_at.setter
     def updated_at(self, val):
-        self._dict['updated_at'] = self.convert_datetime(val)
+        self._dict['updated_at'] = convert_datetime(val)
 
     @property
     def published_at(self):
-        return self.convert_timestamp(self._dict.get('published_at'))
+        return convert_timestamp(self._dict.get('published_at'))
 
     @published_at.setter
     def published_at(self, val):
