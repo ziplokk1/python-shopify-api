@@ -46,3 +46,10 @@ class ShopifyApiWrapper(object):
         :return:
         """
         return {k: v for k, v in d.items() if v}
+
+    def url_host(self):
+        """
+        Format the URL host with the api_key, password, and store name for access to shopify's api.
+        :return: Formatted URL (https://api_key:password@store_name.myshopify.com)
+        """
+        return 'https://{}:{}@{}.myshopify.com'.format(self.api_key, self.password, self.store_name)

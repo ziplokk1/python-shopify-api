@@ -15,15 +15,14 @@ class ProductsApiWrapper(ShopifyApiWrapper):
         'any'
     ]
 
+    default_endpoint = '/admin/products.json'
+    operational_endpoint = '/admin/products/{}.json'
+
     def update(self, product):
         if not product.id:
             raise ValueError('product must have an ID to use `update`')
-        url = 'https://{}:{}@{}.myshopify.com/admin/products/{}.json'.format(
-            self.api_key,
-            self.password,
-            self.store_name,
-            product.id
-        )
+        endpoint = self.operational_endpoint.format(product.id)
+        url = self.url_host() + endpoint
         d = json.dumps(product.__dict__)
 
         response = requests.put(url, data=d, headers={'Content-Type': 'application/json'})
@@ -39,11 +38,7 @@ class ProductsApiWrapper(ShopifyApiWrapper):
         :param product: A Product object instance.
         :return:
         """
-        url = 'https://{}:{}@{}.myshopify.com/admin/products.json'.format(
-            self.api_key,
-            self.password,
-            self.store_name
-        )
+        url = self.url_host() + self.default_endpoint
         d = json.dumps(product.__dict__)
         response = requests.post(url, data=d, headers={'Content-Type': 'application/json'})
 
@@ -60,12 +55,8 @@ class ProductsApiWrapper(ShopifyApiWrapper):
         :param id_: The products ID to delete.
         :return:
         """
-        url = 'https://{}:{}@{}.myshopify.com/admin/products/{}.json'.format(
-            self.api_key,
-            self.password,
-            self.store_name,
-            id_
-        )
+        endpoint = self.operational_endpoint.format(id_)
+        url = self.url_host() + endpoint
         response = requests.delete(url)
 
         err_check = ShopifyApiError(response)
@@ -125,11 +116,7 @@ class ProductsApiWrapper(ShopifyApiWrapper):
         :param fields: List of fields to include in the response.
         :return:
         """
-        url = 'https://{}:{}@{}.myshopify.com/admin/products.json'.format(
-            self.api_key,
-            self.password,
-            self.store_name
-        )
+        url = self.url_host() + self.default_endpoint
         if published_status not in self.valid_published_statuses:
             raise ValueError('\'{}\' is not a valid published status. Use one of {}.'.format(
                 published_status, self.valid_published_statuses))
