@@ -1,7 +1,8 @@
 import requests
 import json
 
-from ..base import ShopifyApiWrapper, convert_datetime
+from ..base import ShopifyApiWrapper, datetime_to_string
+from .objects import Order
 
 
 class OrdersApiWrapper(ShopifyApiWrapper):
@@ -53,12 +54,12 @@ class OrdersApiWrapper(ShopifyApiWrapper):
             limit=limit,
             page=page,
             since_id=since_id,
-            created_at_min=convert_datetime(created_at_min),
-            created_at_max=convert_datetime(created_at_max),
-            updated_at_min=convert_datetime(updated_at_min),
-            updated_at_max=convert_datetime(updated_at_max),
-            processed_at_min=convert_datetime(processed_at_min),
-            processed_at_max=convert_datetime(processed_at_max),
+            created_at_min=datetime_to_string(created_at_min),
+            created_at_max=datetime_to_string(created_at_max),
+            updated_at_min=datetime_to_string(updated_at_min),
+            updated_at_max=datetime_to_string(updated_at_max),
+            processed_at_min=datetime_to_string(processed_at_min),
+            processed_at_max=datetime_to_string(processed_at_max),
             status=status,
             financial_status=financial_status,
             fulfillment_status=fulfillment_status,
@@ -69,4 +70,4 @@ class OrdersApiWrapper(ShopifyApiWrapper):
         response = requests.get(url, params=params)
         with open('orders-list.json', 'wb') as f:
             f.write(response.content)
-        return json.loads(response.content)
+        return [Order(x) for x in json.loads(response.content).get('orders', [])]
