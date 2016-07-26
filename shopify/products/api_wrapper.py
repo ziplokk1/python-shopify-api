@@ -1,7 +1,6 @@
 import json
 
 import requests
-import datetime
 
 from .objects import Product
 from ..base import ShopifyApiWrapper, ShopifyApiError, convert_datetime
