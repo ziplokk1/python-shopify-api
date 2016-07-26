@@ -143,5 +143,7 @@ class ProductsApiWrapper(ShopifyApiWrapper):
         )
         params = self.remove_empty(params)
         response = requests.get(url, params=params)
+        with open('products-list.json', 'wb') as f:
+            f.write(response.content)
         data = json.loads(response.content)
         return [Product(x) for x in data.get('products', [])]
