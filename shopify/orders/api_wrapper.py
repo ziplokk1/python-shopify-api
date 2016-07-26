@@ -1,4 +1,5 @@
 import requests
+import json
 
 from ..base import ShopifyApiWrapper, convert_datetime
 
@@ -68,3 +69,4 @@ class OrdersApiWrapper(ShopifyApiWrapper):
         response = requests.get(url, params=params)
         with open('orders-list.json', 'wb') as f:
             f.write(response.content)
+        return json.loads(response.content)
