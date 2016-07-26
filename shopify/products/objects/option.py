@@ -32,3 +32,6 @@ class Option(Base):
     @values.setter
     def values(self, val):
         self._dict['values'] = val
+
+    def __repr__(self):
+        return '<Option id={} product_id={} name={}>'.format(self.id, self.product_id, self.name)

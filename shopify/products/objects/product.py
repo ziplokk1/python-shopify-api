@@ -143,3 +143,6 @@ class Product(Base):
     @property
     def __dict__(self):
         return {'product': self._dict}
+
+    def __repr__(self):
+        return '<Product id={} title={} options={} variants={} images={}>'.format(self.id, self.title, self.options(), self.variants(), self.images())

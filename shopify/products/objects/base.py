@@ -48,8 +48,5 @@ class Base(object):
     def __dict__(self):
         return self._dict
 
-    def __repr__(self):
-        return repr(self._dict)
-
     def __str__(self):
         return str(self._dict)

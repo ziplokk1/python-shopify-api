@@ -5,6 +5,10 @@ from .base import Base
 
 class Image(Base):
 
+    def __init__(self, d, **kwargs):
+        Base.__init__(self, d, **kwargs)
+        self.image_location = None
+
     @property
     def product_id(self):
         return self._dict.get('product_id')
@@ -46,9 +50,13 @@ class Image(Base):
     def attach(self, f):
         """
         Attach an image file instead of using a url.
-        :param f:
+        :param f: Path to image file.
         :return:
         """
         with open(f, 'rb') as f:
             encoded = base64.b64encode(f.read())
         self._dict['attachment'] = encoded
+        self.image_location = f
+
+    def __repr__(self):
+        return '<Image id={} src={} attachment={}>'.format(self.id, self.src, self.image_location)

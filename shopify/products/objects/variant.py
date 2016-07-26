@@ -189,3 +189,8 @@ class Variant(Base):
     @requires_shipping.setter
     def requires_shipping(self, val):
         self._dict['requires_shipping'] = val
+
+    def __repr__(self):
+        return '<Variant id={} product_id={} title={} price={}>'.format(
+            self.id, self.product_id, self.title, self.price
+        )
