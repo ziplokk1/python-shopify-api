@@ -3,7 +3,7 @@ import json
 import requests
 import datetime
 
-from .shopify_inventory_objects import Product
+from .objects import Product
 from ..base import ShopifyApiWrapper, ShopifyApiError
 
 
