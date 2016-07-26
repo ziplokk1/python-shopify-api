@@ -19,7 +19,7 @@
           "product_id": 7583017923,
           "title": "Default Title",
           "price": "15.99",
-          "sku": "FBA-ALV-0008524-4-1-OFF-7.35-COM-GBY",
+          "sku": "test-sku",
           "position": 1,
           "grams": 454,
           "inventory_policy": "deny",

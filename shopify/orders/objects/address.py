@@ -40,6 +40,8 @@ class Address(Location):
     Used to parse out billing_address and shipping_address objects.
     """
 
+    # Address has no id field
+
     @property
     def first_name(self):
         return self._dict.get('first_name')
@@ -47,6 +49,10 @@ class Address(Location):
     @property
     def phone(self):
         return self._dict.get('phone')
+
+    @property
+    def province(self):
+        return self._dict.get('province')
 
     @property
     def country(self):

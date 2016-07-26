@@ -1,0 +1,17 @@
+{
+  "first_name": "Test",
+  "address1": "123 Test Ln",
+  "phone": null,
+  "city": "City",
+  "zip": "12345",
+  "province": "State",
+  "country": "United States",
+  "last_name": "Customer",
+  "address2": "",
+  "company": null,
+  "latitude": 0.0,
+  "longitude": 0.0,
+  "name": "Test Customer",
+  "country_code": "US",
+  "province_code": "ST"
+}

@@ -1,0 +1,12 @@
+{
+  "id": 2772048707,
+  "title": "Standard Shipping",
+  "price": "8.00",
+  "code": "Standard Shipping",
+  "source": "shopify",
+  "phone": null,
+  "requested_fulfillment_service_id": null,
+  "delivery_category": null,
+  "carrier_identifier": null,
+  "tax_lines": []
+}
