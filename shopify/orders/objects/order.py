@@ -6,6 +6,10 @@ from .shipping_line import ShippingLine
 from .client_detail import ClientDetail
 from .payment_detail import PaymentDetail
 from .customer import Customer
+from .discount_code import DiscountCode
+from .note_attribute import NoteAttribute
+from .fulfillment import Fulfillment
+from .refund import Refund
 
 
 class Order(BaseParser):
@@ -164,13 +168,11 @@ class Order(BaseParser):
 
     @property
     def discount_codes(self):
-        # ToDo: Figure out what discount_codes element contains.
-        return self._dict.get('discount_codes', [])
+        return [DiscountCode(x) for x in self._dict.get('discount_codes', [])]
 
     @property
     def note_attributes(self):
-        # ToDo: Figure out what note_attributes element contains.
-        return self._dict.get('note_attributes', [])
+        return [NoteAttribute(x) for x in self._dict.get('note_attributes', [])]
 
     @property
     def payment_gateway_names(self):
@@ -227,8 +229,7 @@ class Order(BaseParser):
 
     @property
     def fulfillments(self):
-        # ToDo: Figure out what fulfillments returns
-        return []
+        return [Fulfillment(x) for x in self._dict.get('fulfillments', [])]
 
     @property
     def client_details(self):
@@ -236,8 +237,7 @@ class Order(BaseParser):
 
     @property
     def refunds(self):
-        # ToDo: Figure out what refunds returns
-        return []
+        return [Refund(x) for x in self._dict.get('refunds', [])]
 
     @property
     def payment_details(self):

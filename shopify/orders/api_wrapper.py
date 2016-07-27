@@ -69,6 +69,9 @@ class OrdersApiWrapper(ShopifyApiWrapper):
         url = self.url_host() + self.default_endpoint
         response = requests.get(url, params=params)
 
+        with open('orders-list.json', 'wb') as f:
+            f.write(response.content)
+
         # Check if the response was an error and raise if necessary.
         err = ShopifyApiError(response)
         if err.has_error():

@@ -1,5 +1,6 @@
 from .address import Location
 from .tax_line import TaxLine
+from .note_attribute import NoteAttribute
 from ...base import BaseParser, string_to_float
 
 
@@ -67,8 +68,9 @@ class LineItem(BaseParser):
 
     @property
     def properties(self):
-        # ToDo: See what the properties list contains in response.
-        return self._dict.get('properties', [])
+        # Note attribute instance is used since it contains the same data as
+        # the properties element.
+        return [NoteAttribute(x) for x in self._dict.get('properties', [])]
 
     @property
     def product_exists(self):
