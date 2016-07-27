@@ -11,6 +11,9 @@ class OrdersApiWrapper(ShopifyApiWrapper):
 
     default_endpoint = '/admin/orders.json'
     operational_endpoint = '/admin/orders/{}.json'
+    close_endpoint = '/admin/orders/{}/close.json'
+    open_endpoint = '/admin/orders/{}/open.json'
+    cancel_endpoint = '/admin/orders/{}/cancel.json'
 
     valid_status_values = [
         'open',
@@ -79,3 +82,26 @@ class OrdersApiWrapper(ShopifyApiWrapper):
 
         data = json.loads(response.content)
         return [Order(x) for x in data.get('orders', [])]
+
+    def _close(self, order_id):
+        endpoint = self.close_endpoint.format(order_id)
+        url = self.url_host() + endpoint
+
+        r = requests.post(url, data='{}', headers={"Content-Type": 'application/json'})
+
+        with open('order-close.json', 'wb') as f:
+            f.write(r.content)
+
+        err = ShopifyApiError(r)
+        if err.has_error():
+            raise err
+
+        return json.loads(r.content)
+
+    def close(self, order):
+        if not order.id:
+            raise ValueError('`order` object must have id.')
+        return Order(self._close(order.id).get('order'))
+
+    def close_by_id(self, id_):
+        return Order(self._close(id_).get('order'))

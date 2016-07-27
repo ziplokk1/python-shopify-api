@@ -8,7 +8,7 @@ from .payment_detail import PaymentDetail
 from .customer import Customer
 from .discount_code import DiscountCode
 from .note_attribute import NoteAttribute
-from .fulfillment import Fulfillment
+from ...fulfillments import Fulfillment
 from .refund import Refund
 
 
@@ -16,14 +16,33 @@ class Order(BaseParser):
 
     @property
     def email(self):
+        """
+        The customer's email address.
+
+        Is required when a billing address is present.
+        :return:
+        """
         return self._dict.get('email')
 
     @property
     def closed_at(self):
+        """
+        The date and time when the order was closed.
+
+        If the order was not closed, this value is None.
+        :return:
+        """
         return string_to_datetime(self._dict.get('closed_at'))
 
     @property
     def created_at(self):
+        """
+        By default, this auto-generated property is the date and time when the order was created in Shopify.
+
+        If you are importing orders to the Shopify platform from another system,
+            the writable processed_at property will override the created_at date.
+        :return:
+        """
         return string_to_datetime(self._dict.get('created_at'))
 
     @property
@@ -72,10 +91,27 @@ class Order(BaseParser):
 
     @property
     def currency(self):
+        """
+        The three letter code (ISO 4217) for the currency used for the payment.
+        :return:
+        """
         return self._dict.get('currency')
 
     @property
     def financial_status(self):
+        """
+        The financial processing status for the order.
+
+        Values can be one of:
+            - pending
+            - authorized
+            - partially_paid
+            - paid (default)
+            - partially_refunded
+            - refunded
+            - voided
+        :return:
+        """
         return self._dict.get('financial_status')
 
     @property
@@ -92,10 +128,22 @@ class Order(BaseParser):
 
     @property
     def cart_token(self):
+        """
+        Unique identifier for a particular cart that is attached to a particular order.
+        :return:
+        """
         return self._dict.get('cart_token')
 
     @property
     def buyer_accepts_marketing(self):
+        """
+        Indicates whether or not the person who placed the order would like to receive email updates from the shop.
+
+        This is set when checking the "I want to receive occasional emails about new products,
+            promotions and other news" checkbox during checkout.
+        Valid values are True and False.
+        :return:
+        """
         return self._dict.get('buyer_accepts_marketing')
 
     @property
@@ -112,10 +160,27 @@ class Order(BaseParser):
 
     @property
     def cancelled_at(self):
+        """
+        The date and time when the order was cancelled.
+
+        If the order was not cancelled, this value is None.
+        :return:
+        """
         return string_to_datetime(self._dict.get('cancelled_at'))
 
     @property
     def cancel_reason(self):
+        """
+        The reason why the order was cancelled.
+
+        If the order was not cancelled, this value is None.
+        If the order was cancelled, the value will be one of the following:
+            - customer: The customer changed or cancelled the order.
+            - fraud: The order was fraudulent.
+            - inventory: Items in the order were not in inventory.
+            - other: The order was cancelled for a reason not in the list above.
+        :return:
+        """
         return self._dict.get('cancel_reason')
 
     @property
@@ -156,6 +221,10 @@ class Order(BaseParser):
 
     @property
     def browser_ip(self):
+        """
+        The IP address of the browser used by the customer when placing the order.
+        :return:
+        """
         return self._dict.get('browser_ip')
 
     @property
@@ -168,6 +237,12 @@ class Order(BaseParser):
 
     @property
     def discount_codes(self):
+        """
+        Applicable discount codes that can be applied to the order.
+
+        If no codes exist the value will default to an empty list.
+        :return:
+        """
         return [DiscountCode(x) for x in self._dict.get('discount_codes', [])]
 
     @property
@@ -192,7 +267,20 @@ class Order(BaseParser):
 
     @property
     def fulfillment_status(self):
+        """
+        Show fulfillment status.
+
+        Values:
+            - fulfilled (Every line item in the order has been fulfilled)
+            - null (None of the line items in the order have been fulfilled)
+            - partial (At least one line item in the order has been fulfilled)
+        :return:
+        """
         return self._dict.get('fulfillment_status')
+
+    @fulfillment_status.setter
+    def fulfillment_status(self, val):
+        self._dict['fulfillment_status'] = val
 
     @property
     def tax_lines(self):
@@ -200,8 +288,11 @@ class Order(BaseParser):
 
     @property
     def tags(self):
-        # ToDo: return tuple containing individual tags.
-        return self._dict.get('tags')
+        """
+        Tags are additional short descriptors, commonly used for filtering and searching.
+        :return:
+        """
+        return tuple([x.strip() for x in self._dict.get('tags').split(',')])
 
     @property
     def contact_email(self):
@@ -225,14 +316,28 @@ class Order(BaseParser):
 
     @property
     def shipping_address(self):
+        """
+        The mailing address associated with the payment method.
+
+        This address is an optional field that will not be available on orders that do not require one.
+        :return:
+        """
         return Address(self._dict.get('shipping_address'))
 
     @property
     def fulfillments(self):
+        """
+        Return a list of Fulfillment objects parsed from the fulfillments element of the order.
+        :return:
+        """
         return [Fulfillment(x) for x in self._dict.get('fulfillments', [])]
 
     @property
     def client_details(self):
+        """
+        An object containing information about the client.
+        return:
+        """
         return ClientDetail(self._dict.get('client_details'))
 
     @property
@@ -245,4 +350,12 @@ class Order(BaseParser):
 
     @property
     def customer(self):
+        """
+        An object containing information about the customer.
+
+        It is important to note that the order may not have a customer and consumers
+            should not depend on the existence of a customer object.
+        This value may be falsey if the order was created through Shopify POS.
+        :return:
+        """
         return Customer(self._dict.get('customer'))

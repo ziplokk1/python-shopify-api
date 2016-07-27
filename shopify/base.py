@@ -1,6 +1,8 @@
 import json
 import datetime
+import urlparse
 
+import requests
 from dateutil import parser as date_parser
 
 
@@ -63,6 +65,9 @@ class BaseParser(object):
 
     def __str__(self):
         return str(self._dict)
+
+    def __nonzero__(self):
+        return bool(self._dict)
 
 
 class ShopifyApiError(Exception):
