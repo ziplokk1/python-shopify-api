@@ -5,7 +5,7 @@ from ...base import BaseParser, datetime_to_string, string_to_datetime
 
 class Image(BaseParser):
 
-    def __init__(self, d, **kwargs):
+    def __init__(self, d=None, **kwargs):
         BaseParser.__init__(self, d, **kwargs)
         self.image_location = None
 

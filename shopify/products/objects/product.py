@@ -1,4 +1,5 @@
 from HTMLParser import HTMLParser
+import datetime
 
 from ...base import BaseParser, datetime_to_string, string_to_datetime
 from .image import Image
@@ -41,7 +42,7 @@ class Product(BaseParser):
 
     @product_type.setter
     def product_type(self, val):
-        self._dict['vendor'] = val
+        self._dict['product_type'] = val
 
     @property
     def created_at(self):
@@ -73,7 +74,27 @@ class Product(BaseParser):
 
     @published_at.setter
     def published_at(self, val):
+        if isinstance(val, datetime.datetime):
+            val = datetime_to_string(val)
         self._dict['published_at'] = val
+
+    @property
+    def publish_on(self):
+        return string_to_datetime(self._dict.get('publish_on'))
+
+    @publish_on.setter
+    def publish_on(self, val):
+        if isinstance(val, datetime.datetime):
+            val = datetime_to_string(val)
+        self._dict['publish_on'] = val
+
+    @property
+    def published(self):
+        return self._dict.get('published')
+
+    @published.setter
+    def published(self, b):
+        self._dict['published'] = b
 
     @property
     def template_suffix(self):

@@ -162,7 +162,7 @@ class Variant(BaseParser):
 
     @weight.setter
     def weight(self, val):
-        self._dict['weight'] = float(val)
+        self._dict['weight'] = float(val) if val else None
 
     @property
     def weight_unit(self):

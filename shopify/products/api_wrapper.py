@@ -41,7 +41,14 @@ class ProductsApiWrapper(ShopifyApiWrapper):
         """
         url = self.url_host() + self.default_endpoint
         d = json.dumps(product.__dict__)
+
+        with open('shopify-create-product-body.json', 'wb') as f:
+            f.write(d)
+
         response = requests.post(url, data=d, headers={'Content-Type': 'application/json'})
+
+        with open('shopfiy-create-product-response.json', 'wb') as f:
+            f.write(response.content)
 
         err_check = ShopifyApiError(response)
         if err_check.has_error():
