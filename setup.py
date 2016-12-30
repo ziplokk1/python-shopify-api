@@ -1,6 +1,6 @@
 from setuptools import setup, find_packages
 
-version = '0.1.0'
+version = '0.1.3'
 
 REQUIREMENTS = [
     'python-dateutil',
@@ -8,7 +8,7 @@ REQUIREMENTS = [
 ]
 
 setup(
-    name='python-shopify-api',
+    name='python-shopify',
     version=version,
     packages=find_packages(),
     url='https://github.com/ziplokk1/python-shopify-api',
