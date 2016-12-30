@@ -57,7 +57,7 @@ class BaseParser(object):
 
     @property
     def id(self):
-        return self._dict.get('id')
+        return self._dict.get('product', {}).get('id')
 
     @property
     def __dict__(self):

@@ -85,27 +85,27 @@ class Variant(BaseParser):
         self._dict['inventory_management'] = val
 
     @property
-    def option_1(self):
+    def option1(self):
         return self._dict.get('option1')
 
-    @option_1.setter
-    def option_1(self, val):
+    @option1.setter
+    def option1(self, val):
         self._dict['option1'] = val
 
     @property
-    def option_2(self):
+    def option2(self):
         return self._dict.get('option2')
 
-    @option_2.setter
-    def option_2(self, val):
+    @option2.setter
+    def option2(self, val):
         self._dict['option2'] = val
 
     @property
-    def option_3(self):
+    def option3(self):
         return self._dict.get('option3')
 
-    @option_3.setter
-    def option_3(self, val):
+    @option3.setter
+    def option3(self, val):
         self._dict['option3'] = val
 
     @property
