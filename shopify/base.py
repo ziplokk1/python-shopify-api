@@ -57,7 +57,12 @@ class BaseParser(object):
 
     @property
     def id(self):
-        return self._dict.get('id')
+        if 'product' in self._dict:
+            # result of a POST response
+            return self._dict['product'].get('id')
+        else:
+            # result of a GET response
+            return self._dict.get('id')
 
     @property
     def __dict__(self):
