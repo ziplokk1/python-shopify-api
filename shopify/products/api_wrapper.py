@@ -58,7 +58,7 @@ class ProductsApiWrapper(ShopifyApiWrapper):
         if err_check.has_error():
             raise err_check
 
-        return Product(json.loads(response.content))
+        return Product(json.loads(response.content).get('product'))
 
     def _delete(self, id_):
         """
